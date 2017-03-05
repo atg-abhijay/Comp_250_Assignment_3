@@ -63,7 +63,7 @@ public class Expression {
           }
 
           if (countOperator == 2) {
-              throw new IllegalArgumentException("The expression starts with an operator or has 2 or more operators consecutively!");
+              throw new IllegalArgumentException("The expression does not have operators in the right way!");
           }
 
 	    }
@@ -92,13 +92,21 @@ public class Expression {
         
         //int operatorsSize = nonNumeric.size();
 
-        String otherDelimiters = "0123456789()";
+        /* String otherDelimiters = "0123456789()";
         StringTokenizer st2 = new StringTokenizer(expr, otherDelimiters, false);
-        int numOperations = st2.countTokens();
+        Stack<String> justOperators = new Stack<String>();
         while(st2.hasMoreTokens()) {
-            System.out.print(st2.nextToken() + " ");
+            justOperators.push(st2.nextToken());
         }
-        System.out.println();
+
+        Stack<String> justOperatorsInOrder = new Stack<String>();
+        while(!justOperators.empty()) {
+            justOperatorsInOrder.push(justOperators.pop());
+        }
+
+        int numOperations = justOperatorsInOrder.size(); */
+
+
         /* if the expression is only a single number
            (without parentheses) then we push a plus 
            sign to the operators stack because the number
@@ -108,11 +116,13 @@ public class Expression {
         if (nonNumeric.size() == 0) {
             nonNumeric.push("+");
         }
-        System.out.println("Operators Size: " + nonNumeric.size());
+        //System.out.println("Number of operations to do: " + numOperations);
         Integer answer = new Integer(0);
         Integer firstNum = numbersInOrder.peek();
         //while(!numbers.empty() || !operators.empty()) {
-        for(int i = 0; i < nonNumeric.size(); i++) {
+        System.out.println("nonNumeric size: " + nonNumeric.size());
+        int numNonNumeric = nonNumeric.size();
+        for(int i = 0; i < numNonNumeric; i++) {
             System.out.print(firstNum + " ");
             if (i == 0) {
                 numbersInOrder.pop();
