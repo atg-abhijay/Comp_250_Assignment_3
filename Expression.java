@@ -81,6 +81,11 @@ public class Expression {
         } */
         
         //int operatorsSize = operatorsInOrder.size();
+        /* if the expression is only a single number
+           then we push a plus sign to the operators
+           stack because the number by itself cannot
+           be evaluated. e.g. 5 is written as 5+0. below
+           we push the number 0 to the numbers stack */
         if (operatorsInOrder.size() == 0) {
             operatorsInOrder.push("+");
         }
@@ -96,6 +101,10 @@ public class Expression {
             String operator = operatorsInOrder.peek();
             System.out.print(operator + " ");
             operatorsInOrder.pop();
+            /* if the expression is a single number
+               we push a 0 so that it can act as
+               secondNum and the expr can now be
+               evaluated */
             if (numbersInOrder.empty()) {
                 numbersInOrder.push(0);
             }
