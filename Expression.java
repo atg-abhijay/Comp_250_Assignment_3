@@ -128,13 +128,13 @@ public class Expression {
                 numbersInOrder.pop();
             }   
             String operator = nonNumeric.peek();
-            if (operator.equals("(")) {
+            /* if (operator.equals("(")) {
                 nonNumeric.pop();
                 String nextOperator = nonNumeric.peek();
                 Stack<Integer> numbersWithin = new Stack<Integer>();
                 Stack<String> operatorsWithin = new Stack<String>();
 
-            }
+            } */
             System.out.print(operator + " ");
             nonNumeric.pop();
             /* if the expression is a single number
@@ -173,27 +173,47 @@ public class Expression {
         System.out.println(pieces[i]);
         i++;
     }
-    String modifiedExpression = "";
+    String modifiedExpression = "0+";
     for(int j = 0; j < pieces.length; j++) {
         try{
             Integer answer = evaluate(pieces[j]);
             String number = "";
             if (answer < 0) {
-                number = "0" + answer;
+                char[] modExpr = modifiedExpression.toCharArray();
+                char lastChar = modExpr[modExpr.length - 1];
+                if (lastChar == '+') {
+                    number = "0" + answer;
+                }
+                if (lastChar == '-') {
+                    answer = answer * (-1);
+                    number = "0+" + answer;
+                }
+                if (lastChar == '*') {
+                    //modifiedExpression += "-";
+                    
+                }
+                if (lastChar == '%') {
+
+                }
                 modifiedExpression += number;
             }
+
             else {
                 modifiedExpression += answer;
             }
         }
+
         catch(IllegalArgumentException e) {
             modifiedExpression += pieces[j];
         }
+
     }
 
     Integer answer = evaluate(modifiedExpression);
     System.out.println("Answer: " + answer);
     return answer;
+
+    // sample : 2+3*(52-71+(9-4-1)*(5-7)+2*4) Answer: 640
   }
 
     private static Integer performOperation(Integer number1, String operation, Integer number2) {
