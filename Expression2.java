@@ -34,7 +34,9 @@ public class Expression2 {
 
         // filling numbers stack
         while(st.hasMoreTokens()) {
-            numbers.push(st.nextToken());
+			Integer num = Integer.parseInt(st.nextToken());
+            numbers.push(num);
+			System.out.println("Number: " + numbers.peek());
         }
         /* making the stack in which the
            numbers are in the correct order */
@@ -45,6 +47,7 @@ public class Expression2 {
         // filling the symbols stack
         while(st2.hasMoreTokens()) {
             symbols.push(st2.nextToken());
+			System.out.println("Symbol: " + symbols.peek());
         }
         /* making the stack in which the
            symbols are in the correct order */ 
@@ -52,12 +55,41 @@ public class Expression2 {
             symbolsInOrder.push(symbols.pop());
         }
 
+		Integer answer = new Integer(0);
+		Integer num = numbersInOrder.peek();
+		int numValues = numbersInOrder.size();
+		while(!symbolsInOrder.empty()) {
+			if (!symbolsInOrder.peek().equals("(")) {
+				//num = numbersInOrder.peek();
+				if (numbersInOrder.size() == numValues) {
+					numbersInOrder.pop();
+				}
+				Integer secondNum = numbersInOrder.peek();
+				numbersInOrder.pop();
+				if (symbolsInOrder.peek().equals("+")) {
+					answer = num + secondNum;
+				}
+				if (symbolsInOrder.peek().equals("-")) {
+					answer = num - secondNum;
+				}
+				if (symbolsInOrder.peek().equals("*")) {
+					answer = num * secondNum;
+				}
+				if (symbolsInOrder.peek().equals("%")) {
+					answer = num / secondNum;
+				}
+				symbolsInOrder.pop();
+				System.out.println("Answer: " + answer);
+				num = answer;
+			}
+		}
+		
 
 
 
 
 	    // change this
-	    return ;
+	    return answer;
 	}	
 		
 	public static void main(String args[]) throws Exception {
