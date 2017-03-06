@@ -213,7 +213,7 @@ public class Expression {
     System.out.println("Answer: " + answer);
     return answer;
 
-    // sample : 2+3*(52-71+(9-4-1)*(5-7)+2*4) Answer: 640
+    // sample : 2+3*(52-71+(9-4-1)*(5-7)+2*4) Answer:s 640
   }
 
     private static Integer performOperation(Integer number1, String operation, Integer number2) {
