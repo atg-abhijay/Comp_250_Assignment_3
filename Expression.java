@@ -30,7 +30,7 @@ public class Expression {
         } */
 
 		StringTokenizer st = new StringTokenizer(expr, delimiters, true);    
-		Stack<String> operators = new Stack<String>();
+		Stack<String> symbols = new Stack<String>();
 		Stack<Integer> numbers = new Stack<Integer>();
 
         int countOperator = 1;
@@ -46,8 +46,8 @@ public class Expression {
 		  }
 
 		  catch(NumberFormatException e) {
-			operators.push(element);
-			//System.out.println("Operator: " + operators.peek());
+			symbols.push(element);
+			//System.out.println("Operator: " + symbols.peek());
             if (!element.equals(")") && !element.equals("(")) {
                 countOperator++;
             }
@@ -63,80 +63,50 @@ public class Expression {
           }
 
           if (countOperator == 2) {
-              throw new IllegalArgumentException("The expression does not have operators in the right way!");
+              throw new IllegalArgumentException("The expression does not have symbols in the right way!");
           }
 
 	    }
 
-        Stack<String> nonNumeric = new Stack<String>();
+        Stack<String> symbolsInOrder = new Stack<String>();
         Stack<Integer> numbersInOrder = new Stack<Integer>();
         while(!numbers.empty()) {
             numbersInOrder.push(numbers.pop());
         }
-        while(!operators.empty()) {
-            nonNumeric.push(operators.pop());
+        while(!symbols.empty()) {
+            symbolsInOrder.push(symbols.pop());
         }
-
-        /* int i = 1;
-        while(!numbersInOrder.empty()) {
-              System.out.println(i + ". " + numbersInOrder.pop());
-              i++;
-        }
-        
-        System.out.println();
-        int j = 1;
-        while(!nonNumeric.empty()) {
-              System.out.println(j + ". " + nonNumeric.pop());
-              j++;
-        } */
-        
-        //int operatorsSize = nonNumeric.size();
-
-        /* String otherDelimiters = "0123456789()";
-        StringTokenizer st2 = new StringTokenizer(expr, otherDelimiters, false);
-        Stack<String> justOperators = new Stack<String>();
-        while(st2.hasMoreTokens()) {
-            justOperators.push(st2.nextToken());
-        }
-
-        Stack<String> justOperatorsInOrder = new Stack<String>();
-        while(!justOperators.empty()) {
-            justOperatorsInOrder.push(justOperators.pop());
-        }
-
-        int numOperations = justOperatorsInOrder.size(); */
-
 
         /* if the expression is only a single number
            (without parentheses) then we push a plus 
-           sign to the operators stack because the number
+           sign to the symbols stack because the number
            by itself cannot be evaluated. e.g. 5 is 
            written as 5+0. below we push the number 0 
            to the numbers stack */
-        if (nonNumeric.size() == 0) {
-            nonNumeric.push("+");
+        if (symbolsInOrder.size() == 0) {
+            symbolsInOrder.push("+");
         }
         //System.out.println("Number of operations to do: " + numOperations);
         Integer answer = new Integer(0);
         Integer firstNum = numbersInOrder.peek();
-        //while(!numbers.empty() || !operators.empty()) {
-        //System.out.println("nonNumeric size: " + nonNumeric.size());
-        int numNonNumeric = nonNumeric.size();
-        for(int i = 0; i < numNonNumeric; i++) {
+        //while(!numbers.empty() || !symbols.empty()) {
+        //System.out.println("symbolsInOrder size: " + symbolsInOrder.size());
+        int numsymbolsInOrder = symbolsInOrder.size();
+        for(int i = 0; i < numsymbolsInOrder; i++) {
             System.out.print(firstNum + " ");
             if (i == 0) {
                 numbersInOrder.pop();
             }   
-            String operator = nonNumeric.peek();
+            String operator = symbolsInOrder.peek();
             /* if (operator.equals("(")) {
-                nonNumeric.pop();
-                String nextOperator = nonNumeric.peek();
+                symbolsInOrder.pop();
+                String nextOperator = symbolsInOrder.peek();
                 Stack<Integer> numbersWithin = new Stack<Integer>();
-                Stack<String> operatorsWithin = new Stack<String>();
+                Stack<String> symbolsWithin = new Stack<String>();
 
             } */
             System.out.print(operator + " ");
-            nonNumeric.pop();
+            symbolsInOrder.pop();
             /* if the expression is a single number
                (without parentheses) we push a 0 so 
                that it can act as secondNum and the 
