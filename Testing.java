@@ -1,4 +1,10 @@
+import java.io.*;
+import java.util.*;
+
 public class Testing {
+  static String delimiters="()";
+
+
   public static void main(String[] args) {
     Integer five = new Integer(5);
     System.out.println(five + 7);
@@ -21,6 +27,9 @@ public class Testing {
       System.out.println(parenthMatching(brackets));
       System.out.println();
     }
+    Scanner reader = new Scanner(System.in);
+    String expr = reader.next();
+    attempt(expr);    
   }
 
   public static boolean parenthMatching(char[] input) {
@@ -47,5 +56,46 @@ public class Testing {
       return false;
     }
 
+  }
+
+  public static Integer attempt(String expr) {
+    // STEP 1: Parentheses checking
+
+    char[] exprAsChar = expr.toCharArray();
+    boolean match = parenthMatching(exprAsChar);
+    if (!match) {
+      throw new IllegalArgumentException("The parentheses are not matched!");
+    }
+
+    // STEP 2: 
+
+    StringTokenizer st = new StringTokenizer(expr, delimiters, false);
+    String modifiedExpression = "";
+
+    while(st.hasMoreTokens()) {
+      System.out.println(st.nextToken());
+    }
+    /* while(st.hasMoreTokens()) {
+      String element = st.nextToken();
+      
+      if(!element.equals("(") && !element.equals(")")) {
+        modifiedExpression += element;
+      }
+
+      else {
+        int track = 0;
+        while(track != 0) {
+          if(element.equals("(")) {
+            track++;
+          }
+          if(element.equals(")")) {
+            track--;
+          }
+
+        }
+      }
+
+    } */
+    return 0;
   }
 }
