@@ -23,11 +23,11 @@ public class Expression {
 
         /* checking for the correct number
            and formatting of parentheses */
-        char[] exprAsChar = expr.toCharArray();
+        /* char[] exprAsChar = expr.toCharArray();
         boolean match = parenthMatching(exprAsChar);
         if (!match) {
             throw new IllegalArgumentException("The parentheses are not matched!");
-        }
+        } */
 
 		StringTokenizer st = new StringTokenizer(expr, delimiters, true);    
 		Stack<String> operators = new Stack<String>();
@@ -41,13 +41,13 @@ public class Expression {
 			int num = Integer.parseInt(element);
 			Integer value = new Integer(num);
 			numbers.push(value);
-			System.out.println("Number: " + numbers.peek());
+			//System.out.println("Number: " + numbers.peek());
             countOperator--;
 		  }
 
 		  catch(NumberFormatException e) {
 			operators.push(element);
-			System.out.println("Operator: " + operators.peek());
+			//System.out.println("Operator: " + operators.peek());
             if (!element.equals(")") && !element.equals("(")) {
                 countOperator++;
             }
@@ -120,7 +120,7 @@ public class Expression {
         Integer answer = new Integer(0);
         Integer firstNum = numbersInOrder.peek();
         //while(!numbers.empty() || !operators.empty()) {
-        System.out.println("nonNumeric size: " + nonNumeric.size());
+        //System.out.println("nonNumeric size: " + nonNumeric.size());
         int numNonNumeric = nonNumeric.size();
         for(int i = 0; i < numNonNumeric; i++) {
             System.out.print(firstNum + " ");
@@ -154,6 +154,48 @@ public class Expression {
 	    return answer;
 	}
 
+    private static Integer attempt(String expr) throws Exception {
+    // STEP 1: Parentheses checking
+
+    char[] exprAsChar = expr.toCharArray();
+    boolean match = parenthMatching(exprAsChar);
+    if (!match) {
+      throw new IllegalArgumentException("The parentheses are not matched!");
+    }
+
+    // STEP 2: 
+    String delimiters = "()";
+    StringTokenizer st = new StringTokenizer(expr, delimiters, false);
+    String[] pieces = new String[st.countTokens()];
+    int i = 0;
+    while(st.hasMoreTokens()) {
+        pieces[i] = st.nextToken();
+        System.out.println(pieces[i]);
+        i++;
+    }
+    String modifiedExpression = "";
+    for(int j = 0; j < pieces.length; j++) {
+        try{
+            Integer answer = evaluate(pieces[j]);
+            String number = "";
+            if (answer < 0) {
+                number = "0" + answer;
+                modifiedExpression += number;
+            }
+            else {
+                modifiedExpression += answer;
+            }
+        }
+        catch(IllegalArgumentException e) {
+            modifiedExpression += pieces[j];
+        }
+    }
+
+    Integer answer = evaluate(modifiedExpression);
+    System.out.println("Answer: " + answer);
+    return answer;
+  }
+
     private static Integer performOperation(Integer number1, String operation, Integer number2) {
         if(operation.equals("+")) {
             return number1 + number2; 
@@ -177,7 +219,7 @@ public class Expression {
     int track = 0;
     for(int i = 0; i < input.length; i++) {
       if (track < 0) {
-        System.out.print("Track: " + track + " ");
+        //System.out.print("Track: " + track + " ");
         return false;
       }
       if(input[i] == '(') {
@@ -188,7 +230,7 @@ public class Expression {
       }
     }
 
-    System.out.print("Track: " + track + " ");
+    //System.out.print("Track: " + track + " ");
     if (track == 0) {
       return true;
     }
@@ -227,7 +269,7 @@ public class Expression {
 			line=stdin.readLine();
 			if (line.length()>0) {
 				try {
-					Integer x=evaluate(line);
+					Integer x=attempt(line);
 					System.out.println(" = " + x);
 				}
 				catch (Exception e) {
