@@ -58,6 +58,11 @@ public class Expression2 {
 		Integer answer = new Integer(0);
 		Integer num = numbersInOrder.peek();
 		int numValues = numbersInOrder.size();
+		if(numValues == 1 && symbolsInOrder.size() == 0) {
+			answer = numbersInOrder.peek();
+			return answer;
+		}
+
 		while(!symbolsInOrder.empty()) {
 			if (!symbolsInOrder.peek().equals("(")) {
 				//num = numbersInOrder.peek();
