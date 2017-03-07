@@ -63,8 +63,15 @@ public class Expression2 {
 			return answer;
 		}
 
-		while(!symbolsInOrder.empty()) {
-			if (!symbolsInOrder.peek().equals("(")) {
+		String delimiters3 = "0123456789()";
+		StringTokenizer st3 = new StringTokenizer(expr, delimiters3, false);
+		int numOperators = st3.countTokens();
+		int i = 0;
+		while(i < numOperators) {
+			int openBrackets = symbolsInOrder.search("(");
+			int closedBrackets = symbolsInOrder.search(")");
+
+			if (openBrackets == -1 && closedBrackets == -1) {
 				//num = numbersInOrder.peek();
 				if (numbersInOrder.size() == numValues) {
 					numbersInOrder.pop();
@@ -87,13 +94,30 @@ public class Expression2 {
 				System.out.println("Answer: " + answer);
 				num = answer;
 			}
+
+			else {
+				//symbolsInOrder.pop();
+				int track = 0;
+				String smallerExpr = "";
+				//String operator = symbolsInOrder.peek();
+				while (track != 0) {
+					Integer numWithin = numbersInOrder.peek();
+					numbersInOrder.pop();
+					smallerExpr += numWithin;
+					String operator = symbolsInOrder.peek();
+					if (operator.equals("(")) {
+						track++;
+					}
+					if (operator.equals(")")) {
+						track--;
+					}
+					smallerExpr += operator;
+				}
+				return answer + evaluate(smallerExpr);
+				  
+			}
+			i++;
 		}
-		
-
-
-
-
-	    // change this
 	    return answer;
 	}	
 		
