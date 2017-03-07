@@ -86,6 +86,10 @@ public class Expression {
         if (symbolsInOrder.size() == 0) {
             symbolsInOrder.push("+");
         }
+
+        if (numbersInOrder.size() == 1 && symbolsInOrder.size() == 2 && symbolsInOrder.peek().equals("(")) {
+            return numbersInOrder.peek();
+        }
         //System.out.println("Number of operations to do: " + numOperations);
         Integer answer = new Integer(0);
         Integer firstNum = numbersInOrder.peek();
@@ -134,8 +138,8 @@ public class Expression {
     }
 
     // STEP 2: 
-    String delimiters = "()";
-    StringTokenizer st = new StringTokenizer(expr, delimiters, false);
+    String delimiters2 = "()";
+    StringTokenizer st = new StringTokenizer(expr, delimiters2, false);
     String[] pieces = new String[st.countTokens()];
     int i = 0;
     while(st.hasMoreTokens()) {
@@ -165,20 +169,44 @@ public class Expression {
                 if (lastChar == '%') {
 
                 }
+                //modifiedExpression += "(";
                 modifiedExpression += number;
+                //modifiedExpression += ")";
+                if (j == pieces.length - 1) {
+                    modifiedExpression += ")";
+                }
             }
 
             else {
+                //modifiedExpression += "(";
                 modifiedExpression += answer;
+                //modifiedExpression += ")";
+                if (j == pieces.length - 1) {
+                    modifiedExpression += ")";
+                }
             }
         }
 
         catch(IllegalArgumentException e) {
+            char[] piece = pieces[j].toCharArray();
+            if (piece[0] == '+' || piece[0] == '-' || piece[0] == '*' || piece[0] == '%') {
+                modifiedExpression += ")";
+            }
+
             modifiedExpression += pieces[j];
+
+            if (piece[piece.length - 1] == '+' || piece[piece.length - 1] == '-' || piece[piece.length - 1] == '*' || piece[piece.length - 1] == '%') {
+                modifiedExpression += "(";
+            }
         }
 
     }
 
+    System.out.println(modifiedExpression);
+    StringTokenizer st3 = new StringTokenizer(modifiedExpression, delimiters2, false);
+    while(st3.hasMoreTokens()) {
+        System.out.println(st3.nextToken());
+    }
     Integer answer = evaluate(modifiedExpression);
     System.out.println("Answer: " + answer);
     return answer;
