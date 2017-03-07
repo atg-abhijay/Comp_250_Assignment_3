@@ -11,16 +11,37 @@ public class Expression {
 	    /* The code below gives you an example of utilization of the
 	     * StringTokenizer class to break the Expression string into
 	     * its components */
-	    StringTokenizer st = new StringTokenizer( expr , delimiters , true );    
+	    //StringTokenizer st = new StringTokenizer( expr , delimiters , true );    
         
 	    /* This is just an example of how to use the StringTokenizer */
-	    while ( st.hasMoreTokens() ) {
+	    /* while ( st.hasMoreTokens() ) {
 		String element = st.nextToken();
 		System.out.println("Element ="+element);
-	    }    
+	    } */  
         
 	    /* YOU WRITE YOUR CODE HERE */
-        
+        StringTokenizer st = new StringTokenizer(expr, delimiters, true);
+        while(st.hasMoreTokens()) {
+            String element = st.nextToken();
+            String symbol = "";
+            Integer num = new Integer(0);
+            boolean isNumber = true;
+            try {
+                num = Integer.parseInteger(element);
+            }
+            catch(NumberFormatException e) {
+                symbol = element;
+                isNumber = false;
+            }
+
+            if () {
+
+            }
+            else if(){
+
+            }
+        }
+
 	    // change this
 	    return null;
 	}	
