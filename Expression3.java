@@ -32,9 +32,8 @@ public class Expression3 {
 		boolean firstEntry = true;
 		Integer fromBrackets;
 		int consecutiveOp = 1;
-		//int i = 1;
+		
         while(st.hasMoreTokens()) {
-			//System.out.println("Loop " + i);
             String element = st.nextToken();
             boolean isNum = isNumber(element);
 			boolean isOper = isOperator(element);
@@ -44,16 +43,15 @@ public class Expression3 {
 					if (isNum) {
 						num = Integer.parseInt(element);
 						consecutiveOp--;
-						//System.out.println("#Number: " + num);
 					}
 					else if (isOper) {
 						throw new IllegalArgumentException("Cannot start expression with an operator!");
 					}
-					//firstEntry = false;
 				}
 
 				else {
 					if(isNum) {
+						
 						consecutiveOp--;
 						if (symbol.equals("+")) {
 							num = num + Integer.parseInt(element);
@@ -67,12 +65,11 @@ public class Expression3 {
 						if (symbol.equals("%")) {
 							num = num / Integer.parseInt(element);
 						}
-						//System.out.println("$Number: " + num);
+
 					}
 					else if (isOper) {
 						symbol = element;
 						consecutiveOp++;
-						//System.out.println("Operator: " + symbol);
 					}
 				}
 				firstEntry = false;
@@ -92,7 +89,6 @@ public class Expression3 {
 					element = st.nextToken();
 					if(element.equals("(")) {
 						track++;
-						//fromBrackets = evaluate(temp);
 					}
 					if(element.equals(")")) {
 						track--;
@@ -123,10 +119,12 @@ public class Expression3 {
 
         }
 
-	    // change this
 	    return num;
 	}
 
+
+	/* method to check whether the
+	   token is a number or not */
 	private static boolean isNumber(String element) {
 		boolean result;
 		try {
@@ -138,6 +136,10 @@ public class Expression3 {
 		}
 	}
 
+
+	/* method tot check whether the
+	   token is an operator or not
+	   operators are +,-,*,% */
 	private static boolean isOperator(String element) {
 		boolean result;
 		if (element.equals("+") || element.equals("-") || element.equals("*") || element.equals("%")) {
@@ -146,31 +148,33 @@ public class Expression3 {
 		return false;
 	}
 
+
+	/* method to check whether the
+	   given expression has matching
+	   parentheses or not */
 	private static boolean parenthMatching(char[] input) {
-    //char[] input = expr.toCharArray();
-    int track = 0;
-    for(int i = 0; i < input.length; i++) {
-      	if (track < 0) {
-        	//System.out.print("Track: " + track + " ");
-        	return false;
-      	}
-     	if(input[i] == '(') {
-        	track++;
-      	}
-      	else if(input[i] == ')') {
-        	track--;
-      	}
-    }
+    	int track = 0;
+   		for(int i = 0; i < input.length; i++) {
+      		if (track < 0) {
+        		return false;
+      		}
+     		if(input[i] == '(') {
+        		track++;
+      		}
+      		else if(input[i] == ')') {
+        		track--;
+      		}
+    	}
 
-    //System.out.print("Track: " + track + " ");
-    if (track == 0) {
-    	return true;
-    }
-    else {
-    	return false;
-    }
+    	if (track == 0) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
 
-  }
+	}
+
 		
 	public static void main(String args[]) throws Exception {
 		String line;
