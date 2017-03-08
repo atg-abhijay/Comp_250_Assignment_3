@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Expression {
+public class Expression3 {
 	static String delimiters="+-*%()";
 	
 	
@@ -21,30 +21,111 @@ public class Expression {
         
 	    /* YOU WRITE YOUR CODE HERE */
         StringTokenizer st = new StringTokenizer(expr, delimiters, true);
+		String symbol = "";
+        Integer num = new Integer(0);
+		boolean firstEntry = true;
+		Integer fromBrackets;
+		//int i = 1;
         while(st.hasMoreTokens()) {
+			//System.out.println("Loop " + i);
             String element = st.nextToken();
-            String symbol = "";
-            Integer num = new Integer(0);
-            boolean isNumber = true;
-            try {
-                num = Integer.parseInteger(element);
-            }
-            catch(NumberFormatException e) {
-                symbol = element;
-                isNumber = false;
-            }
+            boolean isNum = isNumber(element);
+			boolean isOper = isOperator(element);
 
-            if () {
+			if (!element.equals("(") && !element.equals(")")) {
+            	if(firstEntry) {
+					if (isNum) {
+						num = Integer.parseInt(element);
+						//System.out.println("#Number: " + num);
+					}
+					//firstEntry = false;
+				}
 
-            }
-            else if(){
+				else {
+					if(isNum) {
+						if (symbol.equals("+")) {
+							num = num + Integer.parseInt(element);
+						}
+						if (symbol.equals("-")) {
+							num = num - Integer.parseInt(element);
+						}
+						if (symbol.equals("*")) {
+							num = num * Integer.parseInt(element);
+						}
+						if (symbol.equals("%")) {
+							num = num / Integer.parseInt(element);
+						}
+						//System.out.println("$Number: " + num);
+					}
+					else if (isOper) {
+						symbol = element;
+						//System.out.println("Operator: " + symbol);
+					}
+				}
+				firstEntry = false;
+				//i++;
+			}
 
-            }
+			else {
+				int track = 0;
+				if (element.equals("(")) {
+					track++;
+				}
+				String temp = "";
+				while(track != 0) {
+					element = st.nextToken();
+					if(element.equals("(")) {
+						track++;
+						//fromBrackets = evaluate(temp);
+					}
+					if(element.equals(")")) {
+						track--;
+					}
+					if (track == 0) {
+						break;
+					}
+					temp += element;
+				}
+				fromBrackets = evaluate(temp);
+
+				if (symbol.equals("+")) {
+					num = num + fromBrackets;
+				}
+				if (symbol.equals("-")) {
+					num = num - fromBrackets;
+				}
+				if (symbol.equals("*")) {
+					num = num * fromBrackets;
+				}
+				if (symbol.equals("%")) {
+					num = num / fromBrackets;
+				}
+			}
+
         }
 
 	    // change this
-	    return null;
-	}	
+	    return num;
+	}
+
+	private static boolean isNumber(String element) {
+		boolean result;
+		try {
+			Integer.parseInt(element);
+			return true;
+		}
+		catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	private static boolean isOperator(String element) {
+		boolean result;
+		if (element.equals("+") || element.equals("-") || element.equals("*") || element.equals("%")) {
+			return true;
+		}
+		return false;
+	}
 		
 	public static void main(String args[]) throws Exception {
 		String line;
