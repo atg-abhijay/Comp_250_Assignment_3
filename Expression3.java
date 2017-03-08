@@ -20,11 +20,18 @@ public class Expression3 {
 	    } */  
         
 	    /* YOU WRITE YOUR CODE HERE */
+		char[] input = expr.toCharArray();
+		boolean brackets = parenthMatching(input);
+		if (!brackets) {
+			throw new IllegalArgumentException("The parentheses are not matched!");
+		}
+
         StringTokenizer st = new StringTokenizer(expr, delimiters, true);
 		String symbol = "";
         Integer num = new Integer(0);
 		boolean firstEntry = true;
 		Integer fromBrackets;
+		int consecutiveOp = 1;
 		//int i = 1;
         while(st.hasMoreTokens()) {
 			//System.out.println("Loop " + i);
@@ -36,13 +43,18 @@ public class Expression3 {
             	if(firstEntry) {
 					if (isNum) {
 						num = Integer.parseInt(element);
+						consecutiveOp--;
 						//System.out.println("#Number: " + num);
+					}
+					else if (isOper) {
+						throw new IllegalArgumentException("Cannot start expression with an operator!");
 					}
 					//firstEntry = false;
 				}
 
 				else {
 					if(isNum) {
+						consecutiveOp--;
 						if (symbol.equals("+")) {
 							num = num + Integer.parseInt(element);
 						}
@@ -59,10 +71,14 @@ public class Expression3 {
 					}
 					else if (isOper) {
 						symbol = element;
+						consecutiveOp++;
 						//System.out.println("Operator: " + symbol);
 					}
 				}
 				firstEntry = false;
+				/* if (consecutiveOp == 2) {
+					throw new IllegalArgumentException("Two operators are present consecutively!");
+				} */
 				//i++;
 			}
 
@@ -91,14 +107,17 @@ public class Expression3 {
 				if (symbol.equals("+")) {
 					num = num + fromBrackets;
 				}
-				if (symbol.equals("-")) {
+				else if (symbol.equals("-")) {
 					num = num - fromBrackets;
 				}
-				if (symbol.equals("*")) {
+				else if (symbol.equals("*")) {
 					num = num * fromBrackets;
 				}
-				if (symbol.equals("%")) {
+				else if (symbol.equals("%")) {
 					num = num / fromBrackets;
+				}
+				else {
+					num = fromBrackets;
 				}
 			}
 
@@ -126,6 +145,32 @@ public class Expression3 {
 		}
 		return false;
 	}
+
+	private static boolean parenthMatching(char[] input) {
+    //char[] input = expr.toCharArray();
+    int track = 0;
+    for(int i = 0; i < input.length; i++) {
+      	if (track < 0) {
+        	//System.out.print("Track: " + track + " ");
+        	return false;
+      	}
+     	if(input[i] == '(') {
+        	track++;
+      	}
+      	else if(input[i] == ')') {
+        	track--;
+      	}
+    }
+
+    //System.out.print("Track: " + track + " ");
+    if (track == 0) {
+    	return true;
+    }
+    else {
+    	return false;
+    }
+
+  }
 		
 	public static void main(String args[]) throws Exception {
 		String line;
