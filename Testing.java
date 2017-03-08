@@ -28,8 +28,20 @@ public class Testing {
       System.out.println();
     }
     Scanner reader = new Scanner(System.in);
-    String expr = reader.next();
-    attempt(expr);    
+    String test = "6+5";
+    char[] input = test.toCharArray();
+    System.out.println(test + "\n" + parenthMatching(input));
+    //String expr = reader.next();
+    //attempt(expr);
+
+    /* String test = "alpha";
+    char c = 'b';
+    if (test.contains(c)) {
+      System.out.println("test contains " + c);
+    }
+    else {
+      System.out.println("test does not contain " + c);
+    } */
   }
 
   public static boolean parenthMatching(char[] input) {
