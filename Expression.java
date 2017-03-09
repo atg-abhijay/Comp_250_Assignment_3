@@ -57,9 +57,9 @@ public class Expression {
                last token was one of +-*% (it can't be a number 
                because we came into the catch block) and therefore
                we throw an exception */
-            if (st.countTokens() == 0 && !element.equals(")") && !element.equals("(")) {
+            /*  if (st.countTokens() == 0 && !element.equals(")") && !element.equals("(")) {
                 throw new IllegalArgumentException("The expression cannot end with an operator!");
-            }
+            } */
           }
 
           if (countOperator == 2) {
@@ -148,58 +148,64 @@ public class Expression {
         i++;
     }
     String modifiedExpression = "0+";
-    for(int j = 0; j < pieces.length; j++) {
-        try{
-            Integer answer = evaluate(pieces[j]);
-            String number = "";
-            if (answer < 0) {
-                char[] modExpr = modifiedExpression.toCharArray();
-                char lastChar = modExpr[modExpr.length - 1];
-                if (lastChar == '+') {
-                    number = "0" + answer;
-                }
-                if (lastChar == '-') {
-                    answer = answer * (-1);
-                    number = "0+" + answer;
-                }
-                if (lastChar == '*') {
-                    //modifiedExpression += "-";
+    String delimiters3 = " +-*%";
+    StringTokenizer st4 = new StringTokenizer(modifiedExpression, delimiters3, false);
+    int numWords = st4.countTokens();
+    while(numWords != 1) {
+        for(int j = 0; j < pieces.length; j++) {
+            try{
+                Integer answer = evaluate(pieces[j]);
+                String number = "";
+                if (answer < 0) {
+                    char[] modExpr = modifiedExpression.toCharArray();
+                    char lastChar = modExpr[modExpr.length - 1];
+                    if (lastChar == '+') {
+                        number = "0" + answer;
+                    }
+                    if (lastChar == '-') {
+                        answer = answer * (-1);
+                        number = "0+" + answer;
+                    }
+                    if (lastChar == '*') {
+                        //modifiedExpression += "-";
                     
-                }
-                if (lastChar == '%') {
+                    }
+                    if (lastChar == '%') {
 
+                    }
+                    //modifiedExpression += "(";
+                    modifiedExpression += number;
+                    //modifiedExpression += ")";
+                    if (j == pieces.length - 1) {
+                        modifiedExpression += ")";
+                    }
                 }
-                //modifiedExpression += "(";
-                modifiedExpression += number;
-                //modifiedExpression += ")";
-                if (j == pieces.length - 1) {
+
+                else {
+                    //modifiedExpression += "(";
+                    modifiedExpression += answer;
+                    //modifiedExpression += ")";
+                    /* if (j == pieces.length - 1) {
+                        modifiedExpression += ")";
+                    } */
+                }
+            }
+
+            catch(IllegalArgumentException e) {
+                /* char[] piece = pieces[j].toCharArray();
+                if (piece[0] == '+' || piece[0] == '-' || piece[0] == '*' || piece[0] == '%') {
                     modifiedExpression += ")";
-                }
-            }
+                } */
 
-            else {
-                //modifiedExpression += "(";
-                modifiedExpression += answer;
-                //modifiedExpression += ")";
-                if (j == pieces.length - 1) {
-                    modifiedExpression += ")";
-                }
+                modifiedExpression += pieces[j];
+
+                /* if (piece[piece.length - 1] == '+' || piece[piece.length - 1] == '-' || piece[piece.length - 1] == '*' || piece[piece.length - 1] == '%') {
+                    modifiedExpression += "(";
+                } */
             }
+            return evaluate(modifiedExpression);
+
         }
-
-        catch(IllegalArgumentException e) {
-            char[] piece = pieces[j].toCharArray();
-            if (piece[0] == '+' || piece[0] == '-' || piece[0] == '*' || piece[0] == '%') {
-                modifiedExpression += ")";
-            }
-
-            modifiedExpression += pieces[j];
-
-            if (piece[piece.length - 1] == '+' || piece[piece.length - 1] == '-' || piece[piece.length - 1] == '*' || piece[piece.length - 1] == '%') {
-                modifiedExpression += "(";
-            }
-        }
-
     }
 
     System.out.println(modifiedExpression);
